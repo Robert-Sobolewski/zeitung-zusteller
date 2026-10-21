@@ -1,0 +1,10 @@
+{
+  "data": "/data/data",
+  "styles": {
+    "basic": {
+      "name": "Basic (OSM)",
+      "data": "/data/data"
+    }
+  },
+  "port": 80
+}

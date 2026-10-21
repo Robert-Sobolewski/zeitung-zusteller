@@ -1,0 +1,29 @@
+# Projekt
+real-data/
+test-data/generated/
+
+# Java/Maven
+backend-spring/target/
+*.jar
+!.mvn/wrapper/maven-wrapper.jar
+
+# Node/Vite
+frontend-web/node_modules/
+frontend-web/dist/
+
+# Python
+ai-pipeline/__pycache__/
+ai-pipeline/*.pyc
+.venv/
+venv/
+
+# Docker / lokalne dane
+pgdata/
+maps/data/
+
+# IDE / OS
+.vscode/
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
