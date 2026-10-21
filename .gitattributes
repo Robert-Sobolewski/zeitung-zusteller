@@ -1,0 +1,5 @@
+# Normalizacja końcówek linii w repo
+* text=auto
+Dockerfile* text eol=lf
+Jenkinsfile text eol=lf
+*.sh text eol=lf
