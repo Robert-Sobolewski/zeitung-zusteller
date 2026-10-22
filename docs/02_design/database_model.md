@@ -21,6 +21,7 @@ erDiagram
         enum side "LEFT/RIGHT"
         string last_name "surname (primary in route view)"
         string first_name "given name(s), may carry suffixes"
+        string annotation "free-text delivery note (e.g. 'BK next to garage')"
         bool active "address still a delivery point"
         int version "sync versioning"
         timestamptz updated_at

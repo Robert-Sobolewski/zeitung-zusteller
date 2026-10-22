@@ -56,6 +56,7 @@ CREATE TABLE delivery_points (
     side         delivery_side,                 -- driver's side / opposite side
     last_name    TEXT NOT NULL,                 -- surname (primary in the route view)
     first_name   TEXT,                          -- given name(s), may carry suffixes ('Walter Sen')
+    annotation   TEXT,                          -- free-text delivery note: 'last house on the left', 'BK next to garage', 'entrance from other street'
     active       BOOLEAN NOT NULL DEFAULT TRUE, -- address still a delivery point
     version      INTEGER NOT NULL DEFAULT 0,    -- sync versioning (F5 conflict resolution)
     updated_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
