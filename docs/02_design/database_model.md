@@ -20,7 +20,7 @@ erDiagram
         string house_number
         enum side "LEFT/RIGHT"
         string customer_name
-        bool active "ACTIVE/CANCELLED (Abgang)"
+        bool active "address still a delivery point"
         int version "sync versioning"
         timestamptz updated_at
         geometry point "PostGIS: WGS84"
@@ -52,10 +52,14 @@ erDiagram
         int delivery_point_id FK
         string newspaper_code FK
         int quantity "copy count"
+        enum sub_type "ANNUAL/MONTHLY/PAUSE (Urlaub)"
+        date valid_from
+        date valid_until
     }
 ```
 
 ## Principles
+- **Time-bounded subscriptions**: the daily list is *derived*, not stored — `WHERE today BETWEEN valid_from AND valid_until`. Zugang = new row with `valid_from` = today; Abgang = `valid_until` = yesterday; Urlaub (vacation pause) = a gap in validity, after which the subscription resumes automatically.
 - **Versioning**: `DeliveryPoint.version` + `updated_at` — the basis for sync conflict resolution (F5).
 - **Geometry**: each delivery point stored as `geometry(Point, 4326)` — GIST index for spatial queries (map, route planning).
 - **Change tracking**: outbox / change log table (`sync_outbox`) — phone→desktop events with acknowledgement.

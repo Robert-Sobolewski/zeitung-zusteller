@@ -10,7 +10,7 @@ Last Updated: 2026-10-21
 - ✅ Acceptance: `docker compose up -d --build` brings up the platform; smoke tests 8/8 PASS (see `04_quality_assurance/testing_report.md`)
 
 ## Phase 1 — AI Parser + Import API
-- [ ] LangGraph pipeline: PDF → JSON (regex + LLM fallback) → copies-sum validation → approval node (human-in-the-loop)
+- [ ] LangGraph pipeline: PDF → JSON (regex + LLM fallback) → copies-sum validation → approval node (human-in-the-loop); import = current subscription state, field changes applied as validity-period updates (Zugang/Abgang/Urlaub)
 - [ ] Spring Boot: JPA entities per `02_design/database_model.md`, repositories, REST CRUD, JWT login, ADMIN/ZUSTELLER roles
 - [ ] Database migrations (Flyway — open decision)
 - [ ] Jenkins pipeline run in UI + test stage
