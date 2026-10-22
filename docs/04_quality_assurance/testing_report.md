@@ -1,26 +1,26 @@
-# Raport testów — Zeitungszusteller Platform
+# Test Report — Zeitungszusteller Platform
 Last Updated: 2026-10-21
 
-## Faza 0 — smoke testy środowiska (2026-10-21)
-Metoda: testy ręczne (curl + psql + `docker compose ps`). Testy automatyczne od Fazy 1.
+## Phase 0 — Environment Smoke Tests (2026-10-21)
+Method: manual tests (curl + psql + `docker compose ps`). Automated testing starts in Phase 1.
 
-### Wyniki
-| # | Test | Oczekiwany wynik | Rzeczywisty wynik | Status |
+### Results
+| # | Test | Expected result | Actual result | Status |
 | :--- | :--- | :--- | :--- | :--- |
-| T1 | `docker compose config -q` | walidacja bez błędów | OK (exit 0) | ✅ PASS |
-| T2 | Start serwisów (`up -d --build`) | wszystkie kontenery healthy | global-postgis, spring-backend, python-langgraph: `Up (healthy)`; react-vite-frontend, jenkins-ci: `Up` | ✅ PASS |
-| T3 | `GET http://localhost:8080/api/health` | status UP + baza połączona | `{"status":"UP","database":"connected","service":"backend-spring"}` | ✅ PASS |
+| T1 | `docker compose config -q` | validation without errors | OK (exit 0) | ✅ PASS |
+| T2 | Service start (`up -d --build`) | all containers healthy | global-postgis, spring-backend, python-langgraph: `Up (healthy)`; react-vite-frontend, jenkins-ci: `Up` | ✅ PASS |
+| T3 | `GET http://localhost:8080/api/health` | status UP + DB connected | `{"status":"UP","database":"connected","service":"backend-spring"}` | ✅ PASS |
 | T4 | `GET http://localhost:8000/health` (ai-pipeline) | status UP | `{"status":"UP","service":"ai-pipeline"}` | ✅ PASS |
 | T5 | `GET http://localhost:5173` (frontend) | HTTP 200 | HTTP 200 | ✅ PASS |
-| T6 | PostGIS w bazie (`pg_extension`) | rozszerzenie zainstalowane | `postgis\|3.4.3` | ✅ PASS |
+| T6 | PostGIS in database (`pg_extension`) | extension installed | `postgis\|3.4.3` | ✅ PASS |
 | T7 | Jenkins `GET http://localhost:8082/login` | HTTP 200 | HTTP 200 | ✅ PASS |
-| T8 | Generator danych testowych | pliki JSON w `test-data/generated/` | `bezirk_8019.json` (61 egz.), `bezirk_8031.json` (61 egz.) | ✅ PASS |
+| T8 | Test data generator | JSON files in `test-data/generated/` | `bezirk_8019.json` (61 copies), `bezirk_8031.json` (61 copies) | ✅ PASS |
 
-**Wynik: 8/8 PASS.** Środowisko Fazы 0 zweryfikowane end-to-end (frontend → backend → baza).
+**Result: 8/8 PASS.** Phase 0 environment verified end-to-end (frontend → backend → database).
 
-## Plan testów automatycznych (Faza 1+)
-| Warstwa | Framework | Zakres |
+## Automated Test Plan (Phase 1+)
+| Layer | Framework | Scope |
 | :--- | :--- | :--- |
-| Backend | JUnit 5 + Testcontainers (PostGIS) | unit: service; integracja: REST + DB |
-| Frontend | Vitest + Testing Library | komponenty, hooki sync |
-| AI pipeline | pytest | parser PDF na syntetycznych dokumentach, walidacja sum |
+| Backend | JUnit 5 + Testcontainers (PostGIS) | unit: services; integration: REST + DB |
+| Frontend | Vitest + Testing Library | components, sync hooks |
+| AI pipeline | pytest | PDF parser on synthetic documents, copies-sum validation |

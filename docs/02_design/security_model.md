@@ -1,32 +1,31 @@
-# Model bezpieczeństwa — Zeitungszusteller Platform
+# Security Model — Zeitungszusteller Platform
 Last Updated: 2026-10-21
 
-## Stan obecny (Faza 0)
-**Brak autoryzacji** — świadoma luka zamknięta w Fazie 1. Endpoint `GET /api/health` jest publiczny
-(healthchecki compose + podgląd statusu). Baza dostępna tylko w sieci Docker (`app-network`) + port hosta 5432 (tylko dev).
+## Current State (Phase 0)
+**No authentication** — a known gap, closed in Phase 1. Endpoint `GET /api/health` is public (compose health checks + status display). The database is reachable only inside the Docker network (`app-network`) plus host port 5432 (dev only).
 
-## Model docelowy (Faza 1+)
+## Target Model (Phase 1+)
 ### Backend — Spring Security + JWT
-- Logowanie: `POST /api/auth/login` → JWT (access token, krótki TTL) + refresh token.
+- Login: `POST /api/auth/login` → JWT (short-lived access token) + refresh token.
 - **RBAC**:
-  | Rola | Uprawnienia |
+  | Role | Permissions |
   | :--- | :--- |
-  | ADMIN | wszystkie bezirki, import PDF, zarządzanie dostawcami i typami gazet |
-  | ZUSTELLER | tylko własny bezirk: podgląd trasy dnia, zgłaszanie zmian (Zugang/Abgang) |
-- Autorytatywny punkt egzekwowania = backend (`@PreAuthorize` / filtry). Klienckie guardy są wyłącznie wygodą UX.
+  | ADMIN | all Bezirke, PDF import, management of delivery persons and newspaper types |
+  | ZUSTELLER | own Bezirk only: daily route view, change reports (Zugang/Abgang) |
+- The authoritative enforcement point is the backend (`@PreAuthorize` / filters). Client-side guards are UX convenience only.
 
-### Warstwa SPA (desktop web + mobile)
-- **Decyzja otwarta** (roadmapa): przechowywanie tokena — plan domyślny: access token w pamięci (React state/context), refresh w **httpOnly cookie** (odporność na XSS). Alternatywa odrzucona na start: `localStorage` — czytelny z JS, ryzyko przy XSS; jeśli zostanie wybrany, jest to świadomie zaakceptowane ryzyko z nazwanym krokiem hardeningu (CSP + sanitizacja).
-- Interceptor/fetch wrapper dodaje `Authorization: Bearer <token>` do każdego żądania API.
-- Route guardy w UI ukrywają niedostępne widoki — nie zastępują RBAC backendu.
+### SPA Layer (desktop web + mobile)
+- **Open decision** (roadmap): token storage — default plan: access token in memory (React state/context), refresh token in an **httpOnly cookie** (XSS resilience). Rejected alternative for the start: `localStorage` — readable from JS, risky under XSS; if chosen later it is a consciously accepted risk with a named hardening step (CSP + sanitization).
+- An interceptor/fetch wrapper attaches `Authorization: Bearer <token>` to every API request.
+- UI route guards hide inaccessible views — they do not replace backend RBAC.
 
-### Mobile (Faza 4)
-- Token po stronie telefonu: bezpieczny storage (expo-secure-store), outbox sync wysyłany z autoryzacją.
-- Dane offline (trasa dnia) = wycinek uprawnień ZUSTELLERA — telefon nie widzi innych bezirków.
+### Mobile (Phase 4)
+- Token on the phone: secure storage (expo-secure-store); outbox sync sent with authentication.
+- Offline data (daily route) = a slice of ZUSTELLER permissions — the phone never sees other Bezirke.
 
-## Zagrożenia i mitigacje
-| Zagrożenie | Mitigacja |
+## Threats and Mitigations
+| Threat | Mitigation |
 | :--- | :--- |
-| XSS → kradzież tokena | refresh w httpOnly cookie, CSP (Faza 2) |
-| Konflikty sync przy równoległych zmianach | wersjonowanie `version` + rozstrzyganie po `updated_at` na backendzie |
-| Dane realne w repo | `.gitignore`: `real-data/`, `test-data/generated/`; generator syntetycznych danych |
+| XSS → token theft | refresh in httpOnly cookie, CSP (Phase 2) |
+| Sync conflicts from concurrent changes | `version` field + resolution by `updated_at` on the backend |
+| Real data leaking into the repo | `.gitignore`: `real-data/`, `test-data/generated/`; synthetic test data generator |

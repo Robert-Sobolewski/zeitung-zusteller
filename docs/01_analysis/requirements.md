@@ -1,31 +1,28 @@
-# Wymagania — Zeitungszusteller Platform
+# Requirements — Zeitungszusteller Platform
 Last Updated: 2026-10-21
 
-## Kontekst
-Platforma wspierająca firmę dystrybucji prasy. Codzienna lista dostaw (Tagesliste) przychodzi
-jako PDF; w terenie dochodzi do zmian (Zugang/Abgang — klienci dochodzą/odchodzą), które trzeba
-aktualizować przed rozpoczęciem zmiany. Projekt łączy realne zastosowanie z portfolio pod
-rozmowy o pracę (standardy IHK: dokumentacja SDLC, testy, CI/CD).
+## Context
+Platform supporting a newspaper distribution company. The daily delivery list (Tagesliste) arrives as a PDF; while out on the route, changes occur (Zugang/Abgang — customers subscribe or cancel), which must be updated before the shift starts. The project combines real-world utility with portfolio value for job interviews (IHK standards: SDLC documentation, testing, CI/CD).
 
-## Wymagania funkcjonalne
-| ID | Wymaganie | Priorytet |
+## Functional Requirements
+| ID | Requirement | Priority |
 | :--- | :--- | :--- |
-| F1 | Import dokumentu dostawy (PDF Tagesliste) do bazy danych z **aprobata użytkownika** przed zapisem (human-in-the-loop) | Must |
-| F2 | Aplikacja desktopowa (web) obsługująca **wielu dostawców**, role RBAC (ADMIN / ZUSTELLER) | Must |
-| F3 | Aplikacja mobilna dla **jednego dostawcy**: trasa dnia offline + widok "bieżący klient" podczas jazdy (nazwisko, nr domu, lewa/prawa strona, rodzaj gazety: ME/OE/BILD/…) | Must |
-| F4 | Voice input zmian na telefonie (de-DE, on-device, offline): np. „Müller, Hauptstr. 12, BILD, abgang" → aktualizacja danych | Should |
-| F5 | Synchronizacja phone ↔ desktop: wzorzec **outbox + wersjonowanie** (rozstrzyganie konfliktów po `updated_at`/`version`) | Must |
-| F6 | Podgląd na mapie: OSM/OpenFreeMap **bez API key**, zdolność do pracy offline | Should |
-| F7 | Planowanie trasy: 1 osoba = przejazd stroną kierowcy → powrót drugą stroną (wyjątek: ≤N domów po drugiej stronie = jeden przejazd); 2 osoby = podział tras | Should |
+| F1 | Import of delivery documents (PDF Tagesliste) into the database with **user approval** before saving (human-in-the-loop) | Must |
+| F2 | Desktop web application serving **multiple delivery persons**, RBAC roles (ADMIN / ZUSTELLER) | Must |
+| F3 | Mobile app for a **single delivery person**: offline daily route + "current customer" view while driving (surname, house number, left/right side, newspaper type: ME/OE/BILD/…) | Must |
+| F4 | Voice input of changes on mobile (de-DE, on-device, offline): e.g. „Müller, Hauptstr. 12, BILD, abgang" → data update | Should |
+| F5 | Phone ↔ desktop synchronization: **outbox + versioning** pattern (conflict resolution via `updated_at`/`version`) | Must |
+| F6 | Map view: OSM/OpenFreeMap **without API key**, offline-capable | Should |
+| F7 | Route planning: 1 person = drive the driver's side → return on the opposite side (exception: ≤N houses on the far side = single pass); 2 persons = route split | Should |
 
-## Wymagania niefunkcjonalne
-| ID | Wymaganie |
+## Non-Functional Requirements
+| ID | Requirement |
 | :--- | :--- |
-| NFR1 | **Offline-first** mobile: tryb samolotowy — pełna trasa dnia działa bez sieci; sync po powrocie do zasięgu |
-| NFR2 | Ochrona danych: dane realne (`real-data/`) nigdy w repo publicznym (`.gitignore`); do repo tylko syntetyczne dane testowe |
-| NFR3 | Zero-config start lokalny: `docker compose up -d --build` podnosi całą platformę |
-| NFR4 | CI/CD: pipeline Jenkins (build obrazów → healthchecki → testy) jako część portfolio |
-| NFR5 | Jakość IHK: dokumentacja SDLC (`docs/`), testy jednostkowe + integracyjne, czysta architektura modułów |
+| NFR1 | **Offline-first** mobile: airplane mode — full daily route works without network; sync after connectivity returns |
+| NFR2 | Data protection: real data (`real-data/`) never in the public repository (`.gitignore`); only synthetic test data committed |
+| NFR3 | Zero-config local start: `docker compose up -d --build` brings up the entire platform |
+| NFR4 | CI/CD: Jenkins pipeline (image build → health checks → tests) as part of the portfolio |
+| NFR5 | IHK quality: SDLC documentation (`docs/`), unit + integration tests, clean module architecture |
 
-## Kryteria akceptacji
-Zdefiniowane per faza w `05_roadmap/roadmap.md`.
+## Acceptance Criteria
+Defined per phase in `05_roadmap/roadmap.md`.
