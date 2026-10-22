@@ -8,7 +8,7 @@ Platform supporting a newspaper distribution company. The **subscriber list** (m
 | ID | Requirement | Priority |
 | :--- | :--- | :--- |
 | F1 | Import of delivery documents (PDF Tagesliste) into the database with **user approval** before saving (human-in-the-loop) | Must |
-| F2 | Desktop web application serving **multiple delivery persons**, RBAC roles (ADMIN / ZUSTELLER) | Must |
+| F2 | Desktop web application serving **multiple delivery persons**, RBAC roles (ADMIN / MANAGER / ZUSTELLER); MANAGER plans routes and assigns districts to delivery persons | Must |
 | F3 | Mobile app for a **single delivery person**: offline daily route + "current customer" view while driving (surname, house number, left/right side, newspaper type: ME/OE/BILD/…) | Must |
 | F4 | Voice input of changes on mobile (de-DE, on-device, offline): e.g. „Müller, Hauptstr. 12, BILD, abgang" → data update; change types: Zugang / Abgang / Urlaub (temporary pause) | Should |
 | F5 | Phone ↔ desktop synchronization: **outbox + versioning** pattern (conflict resolution via `updated_at`/`version`) | Must |

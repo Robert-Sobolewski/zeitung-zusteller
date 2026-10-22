@@ -4,6 +4,8 @@
 
 -- ---------------------------------------------------------------------------
 -- Enum types (stronger than TEXT: the DB rejects invalid values at INSERT)
+-- Roles: ADMIN = full access; MANAGER = route planning + district assignment
+--        to delivery persons; ZUSTELLER = own routes only.
 -- ---------------------------------------------------------------------------
 CREATE TYPE user_role AS ENUM ('ADMIN', 'MANAGER', 'ZUSTELLER');
 CREATE TYPE delivery_side AS ENUM ('LEFT', 'RIGHT');
