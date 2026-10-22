@@ -1,4 +1,10 @@
 fastapi>=0.115,<1.0
 uvicorn[standard]>=0.34,<1.0
+python-multipart>=0.0.9
 
-# Faza 1: langgraph, pypdf — dodamy przy implementacji parsera
+# Faza 1: parser PDF + orkiestracja LangGraph
+pypdf>=6.0,<7.0
+langgraph>=1.2,<2.0
+
+# testy
+pytest>=8.0

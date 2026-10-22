@@ -18,6 +18,19 @@ Method: manual tests (curl + psql + `docker compose ps`). Automated testing star
 
 **Result: 8/8 PASS.** Phase 0 environment verified end-to-end (frontend → backend → database).
 
+## Phase 1 — Parser Tests (2026-10-21)
+Method: pytest against real Tagesliste PDFs (`real-data/`, read-only, never committed).
+
+| # | Test | Result | Status |
+| :--- | :--- | :--- | :--- |
+| T9 | Copy totals match document header + `Summe` block (4 Bezirke: 84/37/54/35) | all OK | ✅ PASS |
+| T10 | Per-newspaper counts match the document's own summary block | exact match | ✅ PASS |
+| T11 | Chronological (route) order preserved; spec fields populated (verified on 8019: first street `Am Holzberg`, first customer Schadt/Werner) | verified | ✅ PASS |
+| T12 | LangGraph pipeline end-to-end from raw PDF bytes | OK | ✅ PASS |
+| T13 | Tampered total is flagged by validation (`BLEDY`) | raised correctly | ✅ PASS |
+
+**Result: 7/7 PASS.** Parser output structure per product spec (miasto/rejon/dostawca/data, ulice[] with klienci[], suma_gazet, walidacja).
+
 ## Automated Test Plan (Phase 1+)
 | Layer | Framework | Scope |
 | :--- | :--- | :--- |
