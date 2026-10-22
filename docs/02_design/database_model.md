@@ -19,7 +19,8 @@ erDiagram
         int street_id FK
         string house_number
         enum side "LEFT/RIGHT"
-        string customer_name
+        string last_name "surname (primary in route view)"
+        string first_name "given name(s), may carry suffixes"
         bool active "address still a delivery point"
         int version "sync versioning"
         timestamptz updated_at
@@ -41,7 +42,7 @@ erDiagram
         int id PK
         string first_name
         string last_name
-        enum role "ADMIN/ZUSTELLER"
+        enum role "ADMIN/MANAGER/ZUSTELLER"
     }
     NEWSPAPER_TYPE {
         string code PK "e.g. ME-OBB/AUSGABE"
