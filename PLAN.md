@@ -3,6 +3,9 @@
 Wizja: platforma dla firmy dystrybucji prasy. Desktop (PC) zarządza wieloma dostawcami,
 mobile (telefon) obsługuje jednego dostawcę w terenie, Python+AI czyta dokumenty i planuje trasy.
 
+**Dokumentacja SDLC (IHK): `docs/`** — wymagania, architektura, model danych, bezpieczeństwo,
+wybór technologii, postęp implementacji, raport testów, roadmapa z Open Decisions.
+
 ## Zasady projektu
 - `real-data/` NIGDY do git (.gitignore) — dane realne; do repo generujemy syntetyczne dane testowe
   (skrypt `tools/generate_testdata.py`: niemieckie nazwiska, ulice, kody gazet z realnej struktury)
@@ -62,7 +65,7 @@ flowchart LR
 ```
 
 ## Fazy (kolejność = wartość + portfolio)
-### Faza 0 — Szkielet repo + Docker + CI
+### Faza 0 — Szkielet repo + Docker + CI ✅ ZAKOŃCZONA (2026-10-21, smoke testy 8/8 PASS)
 - Struktura: `backend/` (Maven), `frontend/` (Vite+React), `mobile/` (Expo), `ai-service/` (Python), `tools/`, `docker-compose.yml`, `Jenkinsfile`
 - .gitignore z real-data/, generator danych testowych, README z instrukcją startu (1 komenda: docker compose up)
 - ✅ Akceptacja: `docker compose up` podnosi postgres+backend (healthcheck)+frontend; Jenkinsfile przechodzi pipeline na lokalnym Jenkins
