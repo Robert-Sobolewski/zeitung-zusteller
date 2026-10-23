@@ -25,5 +25,10 @@ maps/data/
 .vscode/
 .idea/
 *.iml
+*.prefs
 .DS_Store
 Thumbs.db
+.settings/
+.project
+.classpath
+.factorypath
