@@ -2,11 +2,13 @@ package com.zeitungszusteller.app;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
+import org.springframework.boot.testcontainers.context.ImportTestcontainers;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.springframework.context.annotation.Bean;
 import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.utility.DockerImageName;
 
 import javax.sql.DataSource;
 
@@ -22,10 +24,20 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@ImportTestcontainers // 1. Włączamy automatyczne zarządzanie cyklem życia kontenerów przez JUnit 5
 class SchemaSmokeTest {
 
     @Autowired
     private DataSource dataSource;
+
+    // 2. Zamieniamy @Bean na @Container. Pole musi być 'public static final'
+    @Container
+    @ServiceConnection
+    public static final PostgreSQLContainer<?> postgres = 
+        new PostgreSQLContainer<>(
+        		DockerImageName.parse("postgis/postgis:16-3.4")
+        		.asCompatibleSubstituteFor("postgres"));
+        
 
     @Test
     void schemaFromDbInitIsLoaded() throws Exception {
@@ -40,12 +52,5 @@ class SchemaSmokeTest {
             rs.next();
             assertThat(rs.getInt(1)).as("tables from 02-schema.sql").isEqualTo(7);
         }
-    }
-
-    /** Disposable PostGIS container — same image as the production compose stack. */
-    @ServiceConnection
-    @Bean
-    static PostgreSQLContainer<?> postgres() {
-        return new PostgreSQLContainer<>("postgis/postgis:16-3.4");
     }
 }
