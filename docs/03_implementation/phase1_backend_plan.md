@@ -25,11 +25,13 @@ the file is loaded into every test container, so a mismatch fails tests immediat
 | # | Step | Owner | Status | Acceptance criteria |
 | :--- | :--- | :--- | :--- | :--- |
 | S1 | Test harness: Testcontainers + schema load (`SchemaSmokeTest`) | AIAlex | ✅ done | smoke test green — 7 tables present in disposable PostGIS container |
-| S2 | `Zusteller` entity + repository + repository test | **YOU** | ⬜ open | see task below; `mvn test` green locally AND Jenkins pipeline green on `dev` |
+| S2 | `Zusteller` entity + repository + repository test | **YOU** | ✅ done (local) | tests green in IDE 2026-10-25; remaining: push to dev → Jenkins pipeline green |
 | S3 | Remaining entities (Bezirk, Street, DeliveryPoint, NewspaperType, Subscription) + repositories | AIAlex | ⬜ queued | all map to 02-schema.sql; repository tests green |
 | S4 | JWT auth + RBAC (three roles per requirements F2) | AIAlex | ⬜ queued | login endpoint; role-filtered access covered by tests |
 | S5 | Import endpoint — F1: parser JSON → DB with human-in-the-loop approve/reject | AIAlex | ⬜ queued | end-to-end test using a real parsed Bezirk payload |
 | S6 | Daily list endpoint (derived query per domain rule, no stored daily lists) | AIAlex | ⬜ queued | returns only subscriptions valid on the requested date |
+
+**Domain decision (2026-10-25):** keep 1:M `bezirke.zusteller_id` for now. Substitute delivery (Vertreter when the primary Zusteller is sick/on leave) will be modeled later as an assignment extension — not a full M2M yet.
 
 ## YOUR TASK — S2: `Zusteller` entity + repository
 
